@@ -7,7 +7,7 @@ module Scene
 
     def update
       super
-      move_background_right_and_draw
+      draw_background
       Window.draw_font(16, 16, "とくてん: #{@score} てん也", Font.new(Setting::DEFAULT_FONT_SIZE), {color: C_WHITE})
       Window.draw_font(
         Window.width/2 - 3*Setting::ENDING_FONT_SIZE/2,

@@ -12,7 +12,7 @@ module Scene
 
     def update
       super
-      move_background_down_and_draw
+      draw_background
 
       @player.update
       @player.draw
