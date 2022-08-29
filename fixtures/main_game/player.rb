@@ -9,15 +9,23 @@ module Fixture::MainGame
 
       self.x = x
       self.y = y
-      self.image = Image.load("images/player.png")
+      self.image = Image.load("images/videographer.png")
       self.image.set_color_key(C_WHITE)
     end
 
     def update
-      self.x += Input.x # 「←」キー: -1, 「→」キー: 1, 押下無し: 0
-      self.x = (self.x + Window.width) % Window.width
-      self.y += Input.y # 「↑」キー: -1, 「↓」キー: 1, 押下無し: 0
-      self.y = (self.y + Window.height) % Window.height
+      self.x = Input.mouse_x
+      if self.x < 0
+        self.x = 0
+      elsif self.x > (Window.width - self.image.width)
+        self.x = (Window.width - self.image.width)
+      end
+      self.y = Input.mouse_y
+      if self.y < 0
+        self.y = 0
+      elsif self.y > (Window.height - self.image.height)
+        self.y = (Window.height - self.image.height)
+      end
     end
   end
 end
