@@ -7,9 +7,11 @@ module Scene
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @camera = Camera.new(@player)
-
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
       @timer = Timer.new
+      @bed = Interior.new(Window.width, 0, Image.load("images/bed_left.png"))
+      @book_shelf = Interior.new(0, 0, Image.load("images/book_shelf.png"))
+      @kaku_table = Interior.new(250, Window.height/2, Image.load("images/kaku_table.png"))
     end
 
     def update
@@ -19,10 +21,16 @@ module Scene
       @player.update
       @camera.update
       @cat.update
+      @bed.update
+      @book_shelf.update
+      @kaku_table.update
 
       @camera.draw
       @player.draw
       @cat.draw
+      @bed.draw
+      @book_shelf.draw
+      @kaku_table.draw
 
       # test 用
       @timer.on if Input.key_push?(K_1)
