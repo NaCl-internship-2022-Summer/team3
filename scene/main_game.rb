@@ -7,25 +7,18 @@ module Scene
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
 
-      enemy_img = Image.new(64, 64, C_RED)
-      30.times do |i|
-        Enemy.add(rand(150) + 150, rand(150) + 150, enemy_img)
-      end
+      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
     end
 
     def update
       super
-      move_background_down_and_draw
+      draw_background
 
       @player.update
       @player.draw
 
-      management_enemy
-
-      # どれか一つでも当たっていれば1得点(複数個当たっていても1点しか入らない)
-      if Sprite.check(@player, Enemy.collection)
-        @score += 1
-      end
+      @cat.update
+      @cat.draw
     end
 
     def next_scene

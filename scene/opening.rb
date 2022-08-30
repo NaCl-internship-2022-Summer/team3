@@ -6,7 +6,7 @@ module Scene
 
     def update
       super
-      move_background_right_and_draw
+      draw_background
       string = "Space or Enter"
       Window.draw_font(
         Window.width/2 - string.length/2 * Setting::TITLE_FONT_SIZE/2,
