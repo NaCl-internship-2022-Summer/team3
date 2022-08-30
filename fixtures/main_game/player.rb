@@ -24,7 +24,7 @@ module Fixture::MainGame
         self.x += 1
       end
       self.x = [0, [self.x, Window.width - self.image.width].min].max
-      self.y = [0, [self.y, Window.width - self.image.width].min].max
+      self.y = [0, [self.y, Window.height - self.image.height].min].max
 
       mouse_pos_x = Input.mouse_x - self.x
       mouse_pos_y = Input.mouse_y - self.y
