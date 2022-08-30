@@ -9,9 +9,13 @@ module Scene
       @camera = Camera.new(@player)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
       @timer = Timer.new
-      @bed = Interior.new(Window.width, 0, Image.load("images/bed_left.png"))
-      @book_shelf = Interior.new(0, 0, Image.load("images/book_shelf.png"))
-      @kaku_table = Interior.new(250, Window.height/2, Image.load("images/kaku_table.png"))
+      bed_image = Image.load("images/bed_left.png")
+      book_shelf_image = Image.load("images/book_shelf.png")
+      table_image = Image.load("images/kaku_table.png")
+      bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
+      book_shelf = Interior.new(0, 0, book_shelf_image)
+      kaku_table = Interior.new(250, Window.height/2, table_image)
+      @interiors = [bed, book_shelf, kaku_table]
     end
 
     def update
@@ -21,16 +25,12 @@ module Scene
       @player.update
       @camera.update
       @cat.update
-      @bed.update
-      @book_shelf.update
-      @kaku_table.update
+      Interior.update(@interiors)
 
       @camera.draw
       @player.draw
       @cat.draw
-      @bed.draw
-      @book_shelf.draw
-      @kaku_table.draw
+      Interior.draw(@interiors)
 
       # test 用
       @timer.on if Input.key_push?(K_1)
