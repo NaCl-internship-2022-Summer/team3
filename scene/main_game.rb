@@ -32,6 +32,8 @@ module Scene
       @cat.draw
       Interior.draw(@interiors)
 
+      Sprite.check(@player, @interiors)
+
       # test 用
       @timer.on if Input.key_push?(K_1)
       @timer.pause if Input.key_push?(K_2)

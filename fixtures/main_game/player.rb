@@ -12,14 +12,12 @@ module Fixture::MainGame
       @right_player = Image.load("images/right_videographer.png")
       @left_player = Image.load("images/left_videographer.png")
 
-      self.x = x
-      self.y = y
+      self.x, self.y = x, y
       self.image = @right_player
       self.image.set_color_key(C_WHITE)
     end
 
     def update
-
       if Input.key_down?(K_W) || Input.key_down?(K_UP)
         self.y -= 1
       elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
@@ -44,6 +42,22 @@ module Fixture::MainGame
       else
         self.image = @left_player
       end
+    end
+
+    def shot
+      if Input.key_down?(K_W) || Input.key_down?(K_UP)
+        self.y += 1
+      elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
+        self.x += 1
+      elsif Input.key_down?(K_S) || Input.key_down?(K_DOWN)
+        self.y -= 1
+      elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
+        self.x -= 1
+      end
+      Window.draw_font(Window.width/2 - 12*Setting::DEFAULT_FONT_SIZE/2,
+                       Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
+                       "家具が邪魔で進めないよ！", Font.new(Setting::DEFAULT_FONT_SIZE),
+                       {color: C_WHITE})
     end
   end
 end
