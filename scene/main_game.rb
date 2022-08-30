@@ -8,6 +8,7 @@ module Scene
       @player = Player.new(Window.width/2, Window.height - 50)
 
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
+      @timer = Timer.new
     end
 
     def update
@@ -19,6 +20,12 @@ module Scene
 
       @cat.update
       @cat.draw
+
+      # test 用
+      @timer.on if Input.key_push?(K_1)
+      @timer.pause if Input.key_push?(K_2)
+      @timer.off if Input.key_push?(K_3)
+      Window.draw_font(10, 10, "#{@timer.now}", Font.default)
     end
 
     def next_scene
