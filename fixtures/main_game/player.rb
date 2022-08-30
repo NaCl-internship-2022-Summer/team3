@@ -14,18 +14,30 @@ module Fixture::MainGame
     end
 
     def update
-      self.x = Input.mouse_x
+      if Input.key_down?(K_W) || Input.key_down?(K_UP)
+        self.y -= 1
+      elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
+        self.x -= 1
+      elsif Input.key_down?(K_S) || Input.key_down?(K_DOWN)
+        self.y += 1
+      elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
+        self.x += 1
+      end
       if self.x < 0
         self.x = 0
-      elsif self.x > (Window.width - self.image.width)
-        self.x = (Window.width - self.image.width)
+      elsif self.x > Window.width - self.image.width
+        self.x = Window.width - self.image.width
       end
-      self.y = Input.mouse_y
       if self.y < 0
         self.y = 0
-      elsif self.y > (Window.height - self.image.height)
-        self.y = (Window.height - self.image.height)
+      elsif self.y > Window.height - self.image.height
+        self.y = Window.height - self.image.height
       end
+
+      mouse_pos_x = Input.mouse_x - self.x
+      mouse_pos_y = Input.mouse_y - self.y
+      direction = Math.atan2(mouse_pos_y, mouse_pos_x)
+      self.angle = direction * 100
     end
   end
 end
