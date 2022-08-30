@@ -9,6 +9,7 @@ module Fixture::MainGame
     def update
       self.x += @dx
       self.y += @dy
+
       if self.x < 0
         self.x = 0
         @dx = - @dx
@@ -16,6 +17,7 @@ module Fixture::MainGame
         self.x = Window.width - self.image.width
         @dx = - @dx
       end
+
       if self.y < 0
         self.y = 0
         @dy = - @dy

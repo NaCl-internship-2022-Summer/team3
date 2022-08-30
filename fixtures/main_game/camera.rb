@@ -4,7 +4,7 @@ module Fixture::MainGame
 
     def initialize(player)
       @player = player
-      @fov = 10
+      @fov = 10 # 視野角
     end
 
     def update
@@ -13,15 +13,13 @@ module Fixture::MainGame
     def draw
       len = Math.sqrt(Window.width ** 2 + Window.height ** 2)
 
-      fov_rad = @fov * Math::PI / 180
+      fov_rad = Util.to_radian(@fov)
       (- @fov / 2 * 20).upto(@fov * 20) do |i|
         Window.draw_line(@player.cx, @player.cy,
-          @player.cx + len * Math.cos(@player.direction + i / 20.0 * Math::PI / 180),
-          @player.cy + len * Math.sin(@player.direction + i / 20.0 * Math::PI / 180),
-          C_WHITE)
+          @player.cx + len * Math.cos(@player.direction + Util.to_radian(i / 20.0)),
+          @player.cy + len * Math.sin(@player.direction + Util.to_radian(i / 20.0)),
+          [50, 255, 255, 255])
       end
-
-      Window.draw_font(10, 30, "#{@player.direction}", Font.default)
     end
   end
 end
