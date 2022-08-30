@@ -28,8 +28,9 @@ module Fixture::MainGame
 
       mouse_pos_x = Input.mouse_x - self.x
       mouse_pos_y = Input.mouse_y - self.y
-      direction = Math.atan2(mouse_pos_y, mouse_pos_x)
-      self.angle = direction * 100
+      radian = Math.atan2(mouse_pos_y, mouse_pos_x)
+      direction = 180 / Math::PI * radian
+      self.angle = direction
     end
   end
 end
