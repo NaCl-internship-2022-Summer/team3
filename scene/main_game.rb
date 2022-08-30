@@ -6,6 +6,7 @@ module Scene
       super
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
+      @camera = Camera.new(@player)
 
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
       @timer = Timer.new
@@ -16,9 +17,11 @@ module Scene
       draw_background
 
       @player.update
-      @player.draw
-
+      @camera.update
       @cat.update
+
+      @camera.draw
+      @player.draw
       @cat.draw
 
       # test 用
