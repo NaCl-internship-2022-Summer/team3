@@ -9,13 +9,18 @@ module Scene
       @camera = Camera.new(@player)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
       @timer = Timer.new
-      bed_image = Image.load("images/bed_left.png")
-      book_shelf_image = Image.load("images/book_shelf.png")
-      table_image = Image.load("images/kaku_table.png")
+      bed_image = Image.load("images/bed_left.png") # 横300 縦227
+      book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
+      table_image = Image.load("images/kaku_table.png") # 横180 縦145
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
-      kaku_table = Interior.new(250, Window.height/2, table_image)
-      @interiors = [bed, book_shelf, kaku_table]
+      @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
+
+      bed.collision = [90, 0, 10, 160, 160, 140]
+      book_shelf.collision = [10, 10, 190, 120]
+      @kaku_table.collision = [10, 85, 175, 135]
+
+      @interiors = [bed, book_shelf, @kaku_table]
     end
 
     def update
@@ -28,9 +33,10 @@ module Scene
       Interior.update(@interiors)
 
       @camera.draw
-      @player.draw
       @cat.draw
       Interior.draw(@interiors)
+      @player.draw
+      @kaku_table.draw
 
       Sprite.check(@player, @interiors)
 

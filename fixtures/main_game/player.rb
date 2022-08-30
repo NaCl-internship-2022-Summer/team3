@@ -4,18 +4,17 @@ module Fixture::MainGame
 
     def initialize(x, y)
       # self.x, self.y: Spriteを親に持つPlayerはattr_accessorで定義されたx, yを持つ
-
       # self:      Playerクラスから作られたインスタンスである自分
       # self.変数: selfの持つ変数を呼び出す (その処理はgetter/setterを呼び出す)
       # @変数:     インスタンス変数 (privateで参照可能な変数)
-
-      @right_player = Image.load("images/right_videographer.png")
-      @left_player = Image.load("images/left_videographer.png")
-
+      @right_player = Image.load("images/right_videographer.png") # 横106 縦119
+      @left_player = Image.load("images/left_videographer.png") # 横106 縦119
       self.x, self.y = x, y
       self.image = @right_player
       self.image.set_color_key(C_WHITE)
+      self.collision = [53, 5, 5, 100, 85, 100]
     end
+
 
     def update
       if Input.key_down?(K_W) || Input.key_down?(K_UP)
