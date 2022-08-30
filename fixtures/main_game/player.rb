@@ -23,16 +23,8 @@ module Fixture::MainGame
       elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
         self.x += 1
       end
-      if self.x < 0
-        self.x = 0
-      elsif self.x > Window.width - self.image.width
-        self.x = Window.width - self.image.width
-      end
-      if self.y < 0
-        self.y = 0
-      elsif self.y > Window.height - self.image.height
-        self.y = Window.height - self.image.height
-      end
+      self.x = [0, [self.x, Window.width - self.image.width].min].max
+      self.y = [0, [self.y, Window.width - self.image.width].min].max
 
       mouse_pos_x = Input.mouse_x - self.x
       mouse_pos_y = Input.mouse_y - self.y
