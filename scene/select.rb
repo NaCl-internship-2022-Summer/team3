@@ -13,7 +13,7 @@ module Scene
 
       # use save data
       json = SaveData.load
-      @users = json[:users]
+      @users = json[:users] || []
       @account_button_images = []
       @account_button_images_hover = []
       @account_buttons = []
