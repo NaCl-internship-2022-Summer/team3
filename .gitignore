@@ -1,0 +1,5 @@
+# save data
+data/
+
+# editor settings
+.vscode/

@@ -3,6 +3,15 @@ module Scene
     def initialize
       super
 
+      # sleeping cat
+      @sleeping_cat = Sprite.new(10, 100, Image.load("images/_original_cat_sleeping.png"))
+      @sleeping_cat.scale_x = 0.5
+      @sleeping_cat.scale_y = 0.5
+      @sleeping_cat.x = -150
+      @sleeping_cat.y = -220
+
+      @title_font = Font.new(Setting::TITLE_FONT_SIZE)
+
       font = Font.new(32)
       padding = 4
       line_height = 38
@@ -25,11 +34,14 @@ module Scene
     def update
       super
       draw_background
-      string = "Space or Enter"
+
+      @sleeping_cat.draw
+
+      title = "タイトル"
       Window.draw_font(
-        Window.width/2 - string.length/2 * Setting::TITLE_FONT_SIZE/2,
-        Window.height/2 - Setting::TITLE_FONT_SIZE/2,
-        string, Font.new(Setting::TITLE_FONT_SIZE), {color: C_WHITE})
+        (Window.width- @title_font.get_width(title)) / 2,
+        Window.height/2,
+        title, @title_font, {color: C_WHITE})
 
       @play_button.image = @play_button.is_hover ? @play_button_image_hover : @play_button_image
       @exit_button.image = @exit_button.is_hover ? @exit_button_image_hover : @exit_button_image
@@ -44,7 +56,7 @@ module Scene
     end
 
     def next_scene
-      Scene::MainGame.new
+      Scene::Select.new
     end
 
     def finish?
