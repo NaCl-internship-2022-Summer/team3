@@ -16,8 +16,8 @@ module Scene
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
 
-      bed.collision = [90, 0, 10, 160, 160, 140]
-      book_shelf.collision = [10, 10, 190, 120]
+      bed.collision = [90, 0, 10, 200, 250, 200]
+      book_shelf.collision = [10, 10, 185, 160]
       @kaku_table.collision = [10, 85, 175, 135]
 
       @interiors = [bed, book_shelf, @kaku_table]

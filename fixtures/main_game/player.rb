@@ -12,7 +12,7 @@ module Fixture::MainGame
       self.x, self.y = x, y
       self.image = @right_player
       self.image.set_color_key(C_WHITE)
-      self.collision = [53, 5, 5, 100, 85, 100]
+      self.collision = [30, 55, 90, 110]
     end
 
 
