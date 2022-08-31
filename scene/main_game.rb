@@ -7,11 +7,15 @@ module Scene
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @camera = Camera.new(@player)
-      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
+      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
+      @cat.collision = [15, 10, 10, 50, 55, 30]
+      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
+      @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
+      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
-      @time_bar_x = @current_bar_x = @current_len =  Setting::PROGRESS_BAR_START2
+      @time_bar_x = @current_len =  Setting::PROGRESS_BAR_START
 
       bed_image = Image.load("images/bed_left.png") # 横300 縦227
       book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
@@ -41,9 +45,15 @@ module Scene
       @cat.draw
       Interior.draw(@interiors)
       @player.draw
-      @kaku_table.draw
+
+      @interiors.each do |kagu|
+        Debugger.draw_collision(kagu)
+      end
+      Debugger.draw_collision(@cat)
 
       Sprite.check(@player, @interiors)
+      Sprite.check(@interiors, @cat)
+      Sprite.check(@camera, @cat)
 
       # test 用
       @timer.on if Input.key_push?(K_1)
@@ -56,9 +66,8 @@ module Scene
 
       case @timer.status
       when :on
-        Window.draw_box_fill(100, 550, @time_bar_x, 560, C_RED)
+        Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, @time_bar_x, 560, C_RED)
         @time_bar_x = @current_len
-        @current_bar_x = @time_bar_x
         @timer.off if @time_bar_x == Setting::PROGRESS_BAR_END
        if @time_bar_x < Setting::PROGRESS_BAR_END
         Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
@@ -66,19 +75,22 @@ module Scene
                            "Time: #{@timer.now}",
                            @font)
        end
+       Window.draw(48, 532, @rec_large)
+       Window.draw(53, 537, @rec_midium)
+       Window.draw(56, 540, @rec_small)
       when :pause, :off
-        Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, @current_bar_x, 560, C_RED)
-        if @current_bar_x == 100
+        Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, @time_bar_x, 560, C_RED)
+        if @time_bar_x == 100
           Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
                            570,
                            "Time Limit: 1:00",
                            @font)
-        elsif @current_bar_x < Setting::PROGRESS_BAR_END
+        elsif @time_bar_x < Setting::PROGRESS_BAR_END
           Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
                            570,
                            "Time: #{@timer.now}",
                            @font)
-        elsif @current_bar_x == Setting::PROGRESS_BAR_END
+        elsif @time_bar_x == Setting::PROGRESS_BAR_END
           Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
                            570,
                            "Finish: 1:00",
