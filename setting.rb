@@ -27,6 +27,9 @@ module Setting
 
   # main game
   PLAYER_SPEED = 2
+  TIME_LIMIT = 60
+  PROGRESS_BAR_START = 100
+  PROGRESS_BAR_END = 700
 
   # others
   SAVE_FILE_NAME = "data/raw.json"
