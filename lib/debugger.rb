@@ -1,4 +1,6 @@
-# Tools - Debegger
+# デバッグツール ( https://github.com/stonesaw/Spell-Out/blob/main/lib/utils/debugger.rb )
+# - 簡単に画面に文字を出力 ... Debugger.print / Debugger.puts
+# - 当たり判定の表示 ... Debugger.draw_collision
 
 class Debugger
   @font = Font.new(24)
@@ -55,7 +57,7 @@ class Debugger
       sprites = [sprites]
     elsif sprites.class == Array
     else
-      raise ArgumentError, "sprites please : (Sprite | Array[Sprite])"
+      raise ArgumentError, "args[0] types: Sprite | Array[Sprite]"
     end
     sprites.each do |sp|
       next unless sp.collision_enable
@@ -102,7 +104,7 @@ class Debugger
         elsif col.length == 4 # box
           Window.draw_box(*new_col, @color)
         elsif col.length == 6 # triangle
-          Window.draw_triangle(*new_col, @color)
+          Window.draw_triangle(*new_col, @color) # FIXME
         end
       end
     end

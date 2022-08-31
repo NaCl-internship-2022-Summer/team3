@@ -11,7 +11,13 @@ Window.caption = "チュートリアル"
 # 全てのシーン共通で使いたい設定などをしまう
 # 使うときは Setting::定数名 で使う
 module Setting
-  DEFAULT_FONT_SIZE = 24
-  TITLE_FONT_SIZE   = 48
-  ENDING_FONT_SIZE  = 48
+  DEFAULT_FONT_SIZE  = 24
+  TITLE_FONT_SIZE    = 48
+  ENDING_FONT_SIZE   = 48
+  DESCRIBE_FONT_SIZE = 24
+  DESCRIBE_TEXTS = [
+    "TODO: ゲームの説明",
+    "改行もできる"
+  ]
+  SAVE_FILE_NAME = "data/raw.json"
 end
