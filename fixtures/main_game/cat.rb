@@ -4,6 +4,8 @@ module Fixture::MainGame
       self.x, self.y, self.image = x, y, image
       @dx = 4
       @dy = 4
+      @meow = Sound.new("sounds/cat_meow.wav")
+      @meow.set_volume(200)
     end
 
     def update
@@ -25,6 +27,11 @@ module Fixture::MainGame
         self.y = Window.height - self.image.height
         @dy = - @dy
       end
+    end
+
+    def hit
+      @dy = - @dy
+      @meow.play
     end
   end
 end

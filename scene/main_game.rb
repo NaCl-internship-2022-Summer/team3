@@ -9,13 +9,13 @@ module Scene
       @camera = Camera.new(@player)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
       @cat.collision = [15, 10, 10, 50, 55, 30]
-      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
-      @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
-      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
       @time_bar_x = @current_len =  Setting::PROGRESS_BAR_START
+      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
+      @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
+      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
 
       bed_image = Image.load("images/bed_left.png") # 横300 縦227
       book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
@@ -23,7 +23,6 @@ module Scene
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
-
       bed.collision = [280, 10, 20, 210, 230, 210]
       book_shelf.collision = [10, 10, 185, 160]
       @kaku_table.collision = [10, 85, 175, 135]
