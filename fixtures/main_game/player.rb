@@ -4,22 +4,19 @@ module Fixture::MainGame
 
     def initialize(x, y)
       # self.x, self.y: Spriteを親に持つPlayerはattr_accessorで定義されたx, yを持つ
-
       # self:      Playerクラスから作られたインスタンスである自分
       # self.変数: selfの持つ変数を呼び出す (その処理はgetter/setterを呼び出す)
       # @変数:     インスタンス変数 (privateで参照可能な変数)
-
-      @right_player = Image.load("images/right_videographer.png")
-      @left_player = Image.load("images/left_videographer.png")
-
-      self.x = x
-      self.y = y
+      @right_player = Image.load("images/right_videographer.png") # 横106 縦119
+      @left_player = Image.load("images/left_videographer.png") # 横106 縦119
+      self.x, self.y = x, y
       self.image = @right_player
       self.image.set_color_key(C_WHITE)
+      self.collision = [30, 55, 90, 110]
     end
 
-    def update
 
+    def update
       if Input.key_down?(K_W) || Input.key_down?(K_UP)
         self.y -= 1
       elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
@@ -44,6 +41,22 @@ module Fixture::MainGame
       else
         self.image = @left_player
       end
+    end
+
+    def shot
+      if Input.key_down?(K_W) || Input.key_down?(K_UP)
+        self.y += 1
+      elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
+        self.x += 1
+      elsif Input.key_down?(K_S) || Input.key_down?(K_DOWN)
+        self.y -= 1
+      elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
+        self.x -= 1
+      end
+      Window.draw_font(Window.width/2 - 12*Setting::DEFAULT_FONT_SIZE/2,
+                       Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
+                       "家具が邪魔で進めないよ！", Font.new(Setting::DEFAULT_FONT_SIZE),
+                       {color: C_WHITE})
     end
   end
 end
