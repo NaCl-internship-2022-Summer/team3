@@ -6,18 +6,30 @@ Window.width = 800
 Window.height = 600
 
 # ウィンドウのタイトル
-Window.caption = "チュートリアル"
+Window.caption = "バズねこ"
 
 # 全てのシーン共通で使いたい設定などをしまう
 # 使うときは Setting::定数名 で使う
 module Setting
-  DEFAULT_FONT_SIZE  = 24
-  TITLE_FONT_SIZE    = 48
-  ENDING_FONT_SIZE   = 48
-  DESCRIBE_FONT_SIZE = 24
+    # font
+  FONT_JA = "あずきフォント"
+  DEFAULT_FONT_SIZE       = 24
+  TITLE_FONT_SIZE         = 48
+  TITLE_BUTTON_FONT_SIZE  = 32
+  ENDING_FONT_SIZE        = 48
+  DESCRIBE_FONT_SIZE      = 32
+
+  # text
   DESCRIBE_TEXTS = [
     "TODO: ゲームの説明",
     "改行もできる"
   ]
+
+  # main game
+  PLAYER_SPEED = 2
+
+  # others
   SAVE_FILE_NAME = "data/raw.json"
 end
+
+Font.install("./fonts/azuki.ttf")

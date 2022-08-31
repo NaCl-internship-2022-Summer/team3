@@ -28,7 +28,7 @@ class TextBox
     @text_sprite = Sprite.new(
       @x + @width * 0.03 + font_ox,
       @y + @height * 0.1 + font_oy,
-      Image.new(@width * 0.94, @height * 0.8).draw_font(0, 0, @text, @font, @font_color)
+      Image.new(@width * 0.94, @height * 0.8).draw_font_ex(0, 0, @text, @font, @font_color)
     )
     @cursor = Sprite.new(
       @x + @width * 0.03,
@@ -50,10 +50,10 @@ class TextBox
     if w > @text_sprite.image.width
       @cursor.x = @text_sprite.x + @text_sprite.image.width + 1
       diff = w - @text_sprite.image.width
-      @text_sprite.image =  Image.new(@width * 0.94, @height * 0.8).draw_font(-diff, 0, @text, @font, @font_color)
+      @text_sprite.image =  Image.new(@width * 0.94, @height * 0.8).draw_font_ex(-diff, 0, @text, @font, @font_color)
     else
       @cursor.x = @frame.x + @width * 0.03 + w
-      @text_sprite.image = Image.new(@width * 0.94, @height * 0.8).draw_font(0, 0, @text, @font, @font_color)
+      @text_sprite.image = Image.new(@width * 0.94, @height * 0.8).draw_font_ex(0, 0, @text, @font, @font_color)
     end
   end
 

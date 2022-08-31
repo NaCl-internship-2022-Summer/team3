@@ -1,5 +1,7 @@
 require 'dxruby'
 
+$path = File.expand_path(__dir__)
+
 # Dir.[]: [] 内に列挙されたパターンに合うファイルを検索します。
 # https://docs.ruby-lang.org/ja/2.7.0/method/Dir/s/=5b=5d.html
 
@@ -18,8 +20,6 @@ end
 scene = Scene::Opening.new
 
 Debugger.new
-
-$path = File.expand_path(__dir__)
 
 # Window.loopは60fps (1sec に 60回)で処理を実行する
 # Window.fps = でfpsを変えることも可能

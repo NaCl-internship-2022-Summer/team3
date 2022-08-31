@@ -10,23 +10,23 @@ module Scene
       @sleeping_cat.x = -150
       @sleeping_cat.y = -220
 
-      @title_font = Font.new(Setting::TITLE_FONT_SIZE)
+      @title_font = Font.new(Setting::TITLE_FONT_SIZE, Setting::FONT_JA)
 
-      font = Font.new(32)
+      font = Font.new(Setting::TITLE_BUTTON_FONT_SIZE, Setting::FONT_JA)
       padding = 4
       line_height = 38
 
       # play button
-      text = "click to play"
+      text = "ゲームをはじめる"
       w = font.get_width(text) + 10
-      @play_button_image = Image.new(w, 40).draw_font(padding, padding, text, font)
+      @play_button_image = Image.new(w, 40).draw_font_ex(padding, padding, text, font)
       @play_button_image_hover = @play_button_image.clone.line(padding, line_height, w - padding, line_height, C_WHITE)
       @play_button = Button.new((Window.width - @play_button_image.width) / 2, Window.height * 0.7, @play_button_image)
 
       # exit button
-      text = "exit"
+      text = "ゲームをおわる"
       w = font.get_width(text) + 10
-      @exit_button_image = Image.new(w, 40).draw_font(padding, padding, text, font)
+      @exit_button_image = Image.new(w, 40).draw_font_ex(padding, padding, text, font)
       @exit_button_image_hover = @exit_button_image.clone.line(padding, line_height, w - padding, line_height, C_WHITE)
       @exit_button = Button.new((Window.width - @exit_button_image.width) / 2, Window.height * 0.8, @exit_button_image)
     end
@@ -37,8 +37,8 @@ module Scene
 
       @sleeping_cat.draw
 
-      title = "タイトル"
-      Window.draw_font(
+      title = "バズねこ"
+      Window.draw_font_ex(
         (Window.width- @title_font.get_width(title)) / 2,
         Window.height/2,
         title, @title_font, {color: C_WHITE})

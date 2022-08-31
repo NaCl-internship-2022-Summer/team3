@@ -3,36 +3,33 @@ module Scene
     def initialize
       super
 
-      @title_font = Font.new(Setting::TITLE_FONT_SIZE)
+      @title_font = Font.new(Setting::TITLE_FONT_SIZE, Setting::FONT_JA)
       @background = Image.new(Window.width, Window.height, C_WHITE)
 
       # describe
       @describe_oy = 200
-      @describe_font = Font.new(Setting::DESCRIBE_FONT_SIZE)
-
-      font = Font.new(32)
-      padding = 4
-      line_height = 38
+      @describe_font = Font.new(Setting::DESCRIBE_FONT_SIZE, Setting::FONT_JA)
 
 
+      # use save data
       json = SaveData.load
       @users = json[:users]
       @account_button_images = []
       @account_button_images_hover = []
       @account_buttons = []
-
+      font = Font.new(32, Setting::FONT_JA)
+      padding = 4
+      line_height = 38
       @users.each_with_index do |user, i|
         text = user[:name]
         w = font.get_width(text) + 10
-        @account_button_images << Image.new(w, 40).draw_font(padding, padding, text, font, [40, 40, 40])
+        @account_button_images << Image.new(w, 40).draw_font_ex(padding, padding, text, font, { color: [40, 40, 40] })
         @account_button_images_hover << @account_button_images.last.clone.line(padding, line_height, w - padding, line_height, [40, 40, 40])
         @account_buttons << Button.new(
           (Window.width - @account_button_images.last.width) / 2,
           Window.height * 0.6, @account_button_images.last
         )
       end
-
-      # use save data
 
       # new save data
       text = "Create new account"
@@ -46,10 +43,10 @@ module Scene
     def update
       super
       Window.draw(0, 0, @background)
-      Window.draw_font(40, 50, "ネコったー", @title_font, {color: [40, 40, 40]})
+      Window.draw_font_ex(40, 50, "ネコったー", @title_font, {color: [40, 40, 40]})
 
       Setting::DESCRIBE_TEXTS.each_with_index do |text, i|
-        Window.draw_font(
+        Window.draw_font_ex(
           (Window.width - @describe_font.get_width(text)) / 2,
           @describe_oy + @describe_font.size * i,
           text,
@@ -83,7 +80,7 @@ module Scene
       if false # @play_button.is_click(M_LBUTTON)
         Input.set_cursor(IDC_ARROW)
         true
-      elsif @new_user_button.is_click(M_LBUTTON) || Input.key_push?(K_ESCAPE)
+      elsif @new_user_button.is_click(M_LBUTTON)
         Input.set_cursor(IDC_ARROW)
         true
       else

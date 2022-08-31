@@ -13,18 +13,20 @@ module Fixture::MainGame
       self.image = @right_player
       self.image.set_color_key(C_WHITE)
       self.collision = [30, 55, 90, 110]
+
+      @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
     end
 
 
     def update
       if Input.key_down?(K_W) || Input.key_down?(K_UP)
-        self.y -= 1
+        self.y -= Setting::PLAYER_SPEED
       elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
-        self.x -= 1
+        self.x -= Setting::PLAYER_SPEED
       elsif Input.key_down?(K_S) || Input.key_down?(K_DOWN)
-        self.y += 1
+        self.y += Setting::PLAYER_SPEED
       elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
-        self.x += 1
+        self.x += Setting::PLAYER_SPEED
       end
       self.x = [0, [self.x, Window.width - self.image.width].min].max
       self.y = [0, [self.y, Window.height - self.image.height].min].max
@@ -45,17 +47,17 @@ module Fixture::MainGame
 
     def shot
       if Input.key_down?(K_W) || Input.key_down?(K_UP)
-        self.y += 1
+        self.y += Setting::PLAYER_SPEED
       elsif Input.key_down?(K_A) || Input.key_down?(K_LEFT)
-        self.x += 1
+        self.x += Setting::PLAYER_SPEED
       elsif Input.key_down?(K_S) || Input.key_down?(K_DOWN)
-        self.y -= 1
+        self.y -= Setting::PLAYER_SPEED
       elsif Input.key_down?(K_D) || Input.key_down?(K_RIGHT)
-        self.x -= 1
+        self.x -= Setting::PLAYER_SPEED
       end
-      Window.draw_font(Window.width/2 - 12*Setting::DEFAULT_FONT_SIZE/2,
+      Window.draw_font_ex(Window.width/2 - 12*Setting::DEFAULT_FONT_SIZE/2,
                        Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
-                       "家具が邪魔で進めないよ！", Font.new(Setting::DEFAULT_FONT_SIZE),
+                       "家具が邪魔で進めないよ！", @font,
                        {color: C_WHITE})
     end
   end

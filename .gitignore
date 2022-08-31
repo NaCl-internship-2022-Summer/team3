@@ -3,3 +3,6 @@ data/
 
 # editor settings
 .vscode/
+
+# my setup script
+setup.bat
