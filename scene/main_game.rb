@@ -12,9 +12,9 @@ module Scene
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
       @time_bar_x = @current_len =  Setting::PROGRESS_BAR_START
-      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
+      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, [255,192,0,0])
       @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
-      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
+      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, [255,192,0,0])
 
       bed_image = Image.load("images/bed_left.png") # 横300 縦227
       book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
@@ -61,7 +61,7 @@ module Scene
       percent = [@timer.now / Setting::TIME_LIMIT, 1].min
 
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
-      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, C_RED)
+      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
 
       @timer.off if percent >= 1
       if percent < 1
