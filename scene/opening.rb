@@ -29,6 +29,10 @@ module Scene
       @exit_button_image = Image.new(w, 40).draw_font_ex(padding, padding, text, font)
       @exit_button_image_hover = @exit_button_image.clone.line(padding, line_height, w - padding, line_height, C_WHITE)
       @exit_button = Button.new((Window.width - @exit_button_image.width) / 2, Window.height * 0.8, @exit_button_image)
+
+      # 猫の鳴き声
+      @meow = Sound.new("sounds/cat_meow.wav")
+      @meow.set_volume(200)
     end
 
     def update
@@ -64,6 +68,7 @@ module Scene
 
       if @play_button.is_click(M_LBUTTON)
         Input.set_cursor(IDC_ARROW)
+        @meow.play
         true
       elsif @exit_button.is_click(M_LBUTTON) || Input.key_push?(K_ESCAPE)
         Input.set_cursor(IDC_ARROW)
