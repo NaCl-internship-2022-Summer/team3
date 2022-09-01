@@ -5,7 +5,7 @@ module Fixture::MainGame
       @dx = 4
       @dy = 4
       @meow = Sound.new("sounds/cat_meow.wav")
-      @meow.set_volume(200)
+      @meow.set_volume(150)
     end
 
     def update
@@ -31,7 +31,6 @@ module Fixture::MainGame
 
     def hit
       @dy = - @dy
-      @meow.play
     end
   end
 end

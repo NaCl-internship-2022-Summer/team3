@@ -2,7 +2,8 @@ module Fixture::MainGame
   class Interior < Sprite
     def initialize(x, y, image)
       self.x, self.y, self.image = x, y, image
-      @clash_sound = SoundEffect.new(100, WAVE_TRI) { [440, 22] }
+      @clash_sound = Sound.new("sounds/hit.wav")
+      @clash_sound.set_volume(150)
     end
 
     def update

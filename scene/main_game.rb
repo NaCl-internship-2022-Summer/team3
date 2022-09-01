@@ -8,7 +8,6 @@ module Scene
       @player = Player.new(Window.width/2, Window.height - 50)
       @camera = Camera.new(@player)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
-      @cat.collision = [15, 10, 10, 50, 55, 30]
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
@@ -71,7 +70,7 @@ module Scene
        if @time_bar_x < Setting::PROGRESS_BAR_END
         Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
                            570,
-                           "Time: #{@timer.now}",
+                           "Time: #{@timer.now.round(2)}",
                            @font)
        end
        Window.draw(48, 532, @rec_large)
