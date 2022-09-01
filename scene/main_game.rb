@@ -6,7 +6,6 @@ module Scene
       super
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
-      @camera = Camera.new(@player)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
 
       @timer = Timer.new
@@ -27,6 +26,8 @@ module Scene
       @kaku_table.collision = [10, 85, 175, 135]
       @interiors = [bed, book_shelf, @kaku_table]
 
+      @camera = Camera.new(@player, @interiors)
+
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
     end
 
@@ -35,7 +36,7 @@ module Scene
       draw_background
 
       @player.update
-      @camera.update
+      @camera.update(@cat)
       @cat.update
       Interior.update(@interiors)
 
@@ -44,10 +45,11 @@ module Scene
       Interior.draw(@interiors)
       @player.draw
 
-      @interiors.each do |kagu|
-        Debugger.draw_collision(kagu)
-      end
-      Debugger.draw_collision(@cat)
+      # @interiors.each do |kagu|
+      #   Debugger.draw_collision(kagu)
+      # end
+      # Debugger.draw_collision(@cat)
+      # Debugger.draw_msg
 
       Sprite.check(@player, @interiors)
       Sprite.check(@interiors, @cat)
@@ -86,6 +88,8 @@ module Scene
         Window.draw(53, 537, @rec_midium)
         Window.draw(56, 540, @rec_small)
       end
+
+      # Window.draw_font(10, 10, Window.real_fps.to_s, Font.default)
     end
 
     def next_scene
