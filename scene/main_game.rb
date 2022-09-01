@@ -86,7 +86,7 @@ module Scene
         elsif @time_bar_x < Setting::PROGRESS_BAR_END
           Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
                            570,
-                           "Time: #{@timer.now}",
+                           "Time: #{@timer.now.round(2)}",
                            @font)
         elsif @time_bar_x == Setting::PROGRESS_BAR_END
           Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
