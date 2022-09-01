@@ -7,20 +7,27 @@ module Scene
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @camera = Camera.new(@player)
-      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))
+      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
+
       @timer = Timer.new
+      @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
+      @time_bar_x = @current_len =  Setting::PROGRESS_BAR_START
+      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
+      @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
+      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
+
       bed_image = Image.load("images/bed_left.png") # 横300 縦227
       book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
       table_image = Image.load("images/kaku_table.png") # 横180 縦145
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
-
-      bed.collision = [90, 0, 10, 200, 250, 200]
+      bed.collision = [280, 10, 20, 210, 230, 210]
       book_shelf.collision = [10, 10, 185, 160]
       @kaku_table.collision = [10, 85, 175, 135]
-
       @interiors = [bed, book_shelf, @kaku_table]
+
+      @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
     end
 
     def update
@@ -36,15 +43,49 @@ module Scene
       @cat.draw
       Interior.draw(@interiors)
       @player.draw
-      @kaku_table.draw
+
+      @interiors.each do |kagu|
+        Debugger.draw_collision(kagu)
+      end
+      Debugger.draw_collision(@cat)
 
       Sprite.check(@player, @interiors)
+      Sprite.check(@interiors, @cat)
+      Sprite.check(@camera, @cat)
 
       # test 用
       @timer.on if Input.key_push?(K_1)
       @timer.pause if Input.key_push?(K_2)
       @timer.off if Input.key_push?(K_3)
-      Window.draw_font(10, 10, "#{@timer.now}", Font.default)
+
+      percent = [@timer.now / Setting::TIME_LIMIT, 1].min
+
+      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
+      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, C_RED)
+
+      @timer.off if percent >= 1
+      if percent < 1
+        Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
+                         570,
+                         "Time: #{@timer.now.round(2)}",
+                         @font)
+      else
+        Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
+                         570,
+                         "Finish: 1:00",
+                         @font)
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE/2,
+                         Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
+                         "Time Over",
+                         @font,
+                         {color: C_RED})
+      end
+
+      if @timer.status == :on
+        Window.draw(48, 532, @rec_large)
+        Window.draw(53, 537, @rec_midium)
+        Window.draw(56, 540, @rec_small)
+      end
     end
 
     def next_scene
