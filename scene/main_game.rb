@@ -5,6 +5,7 @@ module Scene
     def initialize
       super
       @score = 0
+      @count = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
 
@@ -64,12 +65,26 @@ module Scene
 
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
+      @count = Window.running_time.to_i / 1000
 
-      @timer.off if percent >= 11
-      if percent < 1
-        Window.draw_font(Window.width/2 - 10*Setting::DEFAULT_FONT_SIZE/2,
+      @timer.off if percent >= 1
+      if 0.8 < percent && percent < 1
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
                          570,
-                         "Time: #{@timer.now.round(2)}  Score: #{@score}",
+                         "Time: #{@timer.now.round(2)}",
+                         @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Score: ？？？",
+                         @font)  if @count.even?
+      elsif percent < 1
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Time: #{@timer.now.round(2)}",
+                         @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Score: #{@score}",
                          @font)
       else
         Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
