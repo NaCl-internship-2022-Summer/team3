@@ -57,48 +57,34 @@ module Scene
       @timer.on if Input.key_push?(K_1)
       @timer.pause if Input.key_push?(K_2)
       @timer.off if Input.key_push?(K_3)
+
+      percent = [@timer.now / Setting::TIME_LIMIT, 1].min
+
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
+      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, C_RED)
 
-      @current_len = Setting::PROGRESS_BAR_START + (@bar_length / Setting::TIME_LIMIT) * @timer.now
-      @current_len = Setting::PROGRESS_BAR_END if @current_len > Setting::PROGRESS_BAR_END
-
-      case @timer.status
-      when :on
-        Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, @time_bar_x, 560, C_RED)
-        @time_bar_x = @current_len
-        @timer.off if @time_bar_x == Setting::PROGRESS_BAR_END
-       if @time_bar_x < Setting::PROGRESS_BAR_END
+      @timer.off if percent >= 1
+      if percent < 1
         Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
-                           570,
-                           "Time: #{@timer.now.round(2)}",
-                           @font)
-       end
-       Window.draw(48, 532, @rec_large)
-       Window.draw(53, 537, @rec_midium)
-       Window.draw(56, 540, @rec_small)
-      when :pause, :off
-        Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, @time_bar_x, 560, C_RED)
-        if @time_bar_x == 100
-          Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
-                           570,
-                           "Time Limit: 1:00",
-                           @font)
-        elsif @time_bar_x < Setting::PROGRESS_BAR_END
-          Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
-                           570,
-                           "Time: #{@timer.now.round(2)}",
-                           @font)
-        elsif @time_bar_x == Setting::PROGRESS_BAR_END
-          Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
-                           570,
-                           "Finish: 1:00",
-                           @font)
-          Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE/2,
-                           Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
-                           "Time Over",
-                           @font,
-                           {color: C_RED})
-        end
+                         570,
+                         "Time: #{@timer.now.round(2)}",
+                         @font)
+      else
+        Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
+                         570,
+                         "Finish: 1:00",
+                         @font)
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE/2,
+                         Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
+                         "Time Over",
+                         @font,
+                         {color: C_RED})
+      end
+
+      if @timer.status == :on
+        Window.draw(48, 532, @rec_large)
+        Window.draw(53, 537, @rec_midium)
+        Window.draw(56, 540, @rec_small)
       end
     end
 
