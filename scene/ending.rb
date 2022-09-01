@@ -22,6 +22,9 @@ module Scene
       @return_game_button = Button.new(Window.width * 0.88, Window.height * 0.85, @return_game_image)
 
       # SNSリザルト画面
+      @haikei_image = Image.load("images/haikei_01.png")
+      @new_image = Image.load("images/new.png")
+      @avatar_image = Image.load("images/avatar.png")
       @heart_image = Image.load("images/heart.png")
       @retweet_image = Image.load("images/retweet.png")
       @comment_image = Image.load("images/comment.png")
@@ -68,11 +71,13 @@ module Scene
       3.times do |n|
         Window.draw_box_fill(Setting::RESULT_VIEW_WIDTH_START, set_y[n], Setting::RESULT_VIEW_WIDTH_END, set_y[n + 1], C_WHITE)
         Window.draw_box(Setting::RESULT_VIEW_WIDTH_START, set_y[n], Setting::RESULT_VIEW_WIDTH_END, set_y[n + 1], [255, 204, 204, 204])
-        Window.draw_box_fill(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, Setting::PREVIEW_VIEW_WIDTH_END, set_y[n + 1] - 40, C_BLUE)
+        Window.draw(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, @haikei_image)
+        # Window.draw_box_fill(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, Setting::PREVIEW_VIEW_WIDTH_END, set_y[n + 1] - 40, C_BLUE)
         Window.draw_font(Setting::PREVIEW_VIEW_WIDTH_END - 45, set_y[n + 1] - 30, "#{@score}", @sns_font, {color: C_BLACK})
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 40, set_y[n + 1] - 28, @comment_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 130, set_y[n + 1] - 30, @retweet_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 220, set_y[n + 1] - 30, @heart_image)
+        Window.draw(Setting::RESULT_VIEW_WIDTH_START + 15, set_y[n] + 10, @avatar_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + (Setting::PREVIEW_VIEW_WIDTH_END - Setting::PREVIEW_VIEW_WIDTH_START)/2 - @preview_cats[n].width/2,
                     set_y[n] + 10,
                     @preview_cats[n])
@@ -80,6 +85,8 @@ module Scene
                     set_y[n + 1] - 40 - Setting::PREVIEW_VIEW_HEIGHT/2 - @saisei_image.height/2,
                     @saisei_image)
       end
+      @count = Window.running_time.to_i / 1000
+      Window.draw(Setting::RESULT_VIEW_WIDTH_END - @new_image.width, 10, @new_image) if @count.even?
     end
 
     def next_scene
