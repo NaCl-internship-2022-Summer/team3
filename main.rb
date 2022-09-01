@@ -26,5 +26,6 @@ Debugger.new
 Window.loop do
   scene.update
   scene = scene.next_scene if scene.finish?
+  scene = Scene::MainGame.new if scene.restart?
   Window.close unless scene
 end

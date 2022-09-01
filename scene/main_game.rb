@@ -22,7 +22,7 @@ module Scene
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
-      bed.collision = [280, 10, 20, 210, 230, 210]
+      bed.collision = [20, 20, 280, 210]
       book_shelf.collision = [10, 10, 185, 160]
       @kaku_table.collision = [10, 85, 175, 135]
       @interiors = [bed, book_shelf, @kaku_table]
@@ -99,6 +99,9 @@ module Scene
         return true if Input.key_push?(key)
       end
       false
+    end
+
+    def restart?
     end
 
     private

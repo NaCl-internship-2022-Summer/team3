@@ -17,6 +17,10 @@ module Scene
       raise NotImplementedError
     end
 
+    def restart?
+      raise NotImplementedError
+    end
+
     private
 
     def draw_background

@@ -72,5 +72,8 @@ module Scene
         false
       end
     end
+
+    def restart?
+    end
   end
 end
