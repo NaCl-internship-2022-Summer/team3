@@ -15,6 +15,9 @@ module Fixture::MainGame
       self.collision = [30, 55, 90, 110]
 
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
+      @direction = 0
+      @cx = self.x + self.image.width / 2
+      @cy = self.y + self.image.height / 2
     end
 
 
