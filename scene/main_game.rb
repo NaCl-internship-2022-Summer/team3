@@ -65,11 +65,11 @@ module Scene
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
 
-      @timer.off if percent >= 1
+      @timer.off if percent >= 11
       if percent < 1
-        Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
+        Window.draw_font(Window.width/2 - 10*Setting::DEFAULT_FONT_SIZE/2,
                          570,
-                         "Time: #{@timer.now.round(2)}",
+                         "Time: #{@timer.now.round(2)}  Score: #{@score}",
                          @font)
       else
         Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
