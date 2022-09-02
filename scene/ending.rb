@@ -1,8 +1,13 @@
 module Scene
   class Ending < Scene::Base
-    def initialize(score)
+    def initialize(user)
       super()
-      @score = score
+      @user = user
+      @score = $score
+      @scores = []
+      @user.past_three_data.each do |data|
+        @scores << data[:score]
+      end
       @font = Font.new(Setting::BEST_SCORE_FONT_SIZE, Setting::FONT_JA)
       @default_font = Font.new(Setting::ENDING_FONT_SIZE, Setting::FONT_JA)
       @sns_font = Font.new(20, Setting::FONT_JA)
@@ -54,9 +59,9 @@ module Scene
       Window.bgcolor = C_WHITE
       # draw_background
       Window.draw_font_ex(Window.width * 0.02, Window.height * 0.1, "ベストスコア", @font, {color: C_BLACK})
-      Window.draw_font_ex(Window.width * 0.05, Window.height * 0.2, "#{@score}", @font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.05, Window.height * 0.2, "#{@user.best_score}", @font, {color: C_BLACK})
       Window.draw_font_ex(Window.width * 0.05, Window.height * 0.3, "いいね！", @font, {color: C_BLACK})
-      Window.draw_font_ex(Window.width * 0.80, Window.height * 0.1, "もちねこ", @default_font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.80, Window.height * 0.1, "#{@user.name}", @default_font, {color: C_BLACK})
       @return_title_button.image = @return_title_button.is_hover ? @return_title_button_image_hover : @return_title_button_image
       @return_title_button.draw
       if @return_game_button.is_hover
@@ -70,14 +75,18 @@ module Scene
       end
       @return_game_button.draw
 
+      Debugger.print(@user.past_three_data)
+      # Debugger.print(@user.best_score)
+      # Debugger.print(@scores)
+
+
       # リザルト画面
       set_y = [0, Setting::RESULT_VIEW_HEIGHT_FIRST, Setting::RESULT_VIEW_HEIGHT_SECOND, Window.height]
       3.times do |n|
         Window.draw_box_fill(Setting::RESULT_VIEW_WIDTH_START, set_y[n], Setting::RESULT_VIEW_WIDTH_END, set_y[n + 1], C_WHITE)
         Window.draw_box(Setting::RESULT_VIEW_WIDTH_START, set_y[n], Setting::RESULT_VIEW_WIDTH_END, set_y[n + 1], [255, 204, 204, 204])
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, @haikei_image)
-        # Window.draw_box_fill(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, Setting::PREVIEW_VIEW_WIDTH_END, set_y[n + 1] - 40, C_BLUE)
-        Window.draw_font_ex(Setting::PREVIEW_VIEW_WIDTH_END - 45, set_y[n + 1] - 30, "#{@score}", @sns_font, {color: C_BLACK})
+        Window.draw_font_ex(Setting::PREVIEW_VIEW_WIDTH_END - 45, set_y[n + 1] - 30, "#{@scores[n]}", @sns_font, {color: C_BLACK})
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 40, set_y[n + 1] - 28, @comment_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 130, set_y[n + 1] - 30, @retweet_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 220, set_y[n + 1] - 30, @heart_image)
