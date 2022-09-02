@@ -4,8 +4,6 @@ module Fixture::MainGame
       self.x, self.y, self.image = x, y, image
       @dx = 4
       @dy = 4
-      @meow = Sound.new("sounds/cat_meow.wav")
-      @meow.set_volume(150)
     end
 
     def update

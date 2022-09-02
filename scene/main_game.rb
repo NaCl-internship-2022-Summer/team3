@@ -5,15 +5,16 @@ module Scene
     def initialize
       super
       @score = 0
+      @count = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
       @time_bar_x = @current_len =  Setting::PROGRESS_BAR_START
-      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, C_RED)
+      @rec_large = Image.new(40, 40).circle_fill(20, 20, 20, [255,192,0,0])
       @rec_midium = Image.new(30, 30).circle_fill(15, 15, 15, C_WHITE)
-      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, C_RED)
+      @rec_small = Image.new(25, 25).circle_fill(12, 12, 12, [255,192,0,0])
 
       bed_image = Image.load("images/bed_left.png") # 横300 縦227
       book_shelf_image = Image.load("images/book_shelf.png") # 横192 縦170
@@ -21,7 +22,7 @@ module Scene
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
-      bed.collision = [280, 10, 20, 210, 230, 210]
+      bed.collision = [20, 20, 280, 210]
       book_shelf.collision = [10, 10, 185, 160]
       @kaku_table.collision = [10, 85, 175, 135]
       @interiors = [bed, book_shelf, @kaku_table]
@@ -63,13 +64,27 @@ module Scene
       percent = [@timer.now / Setting::TIME_LIMIT, 1].min
 
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
-      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, C_RED)
+      Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
+      @count = Window.running_time.to_i / 1000
 
       @timer.off if percent >= 1
-      if percent < 1
-        Window.draw_font(Window.width/2 - 8*Setting::DEFAULT_FONT_SIZE/2,
+      if 0.8 < percent && percent < 1
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
                          570,
                          "Time: #{@timer.now.round(2)}",
+                         @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Score: ？？？",
+                         @font)  if @count.even?
+      elsif percent < 1
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Time: #{@timer.now.round(2)}",
+                         @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
+                         570,
+                         "Score: #{@score}",
                          @font)
       else
         Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
@@ -103,6 +118,9 @@ module Scene
         return true if Input.key_push?(key)
       end
       false
+    end
+
+    def restart?
     end
 
     private

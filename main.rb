@@ -21,10 +21,13 @@ scene = Scene::Opening.new
 
 Debugger.new
 
+Window.load_icon("images/buzz_neko.ico")
+
 # Window.loopは60fps (1sec に 60回)で処理を実行する
 # Window.fps = でfpsを変えることも可能
 Window.loop do
   scene.update
   scene = scene.next_scene if scene.finish?
+  scene = Scene::MainGame.new if scene.restart?
   Window.close unless scene
 end
