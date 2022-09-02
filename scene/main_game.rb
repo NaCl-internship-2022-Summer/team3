@@ -6,7 +6,7 @@ module Scene
       super
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
-      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
+      @cat = Cat.new(100, 200, Image.load("images/cat_walking.png"))# 横55 縦56
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
@@ -39,7 +39,7 @@ module Scene
       super
       @player.update
       @camera.update(@cat)
-      @cat.update
+      @cat.update(@interiors)
       Interior.update(@interiors)
 
       Sprite.check(@player, @interiors)
@@ -52,9 +52,9 @@ module Scene
       # draw
       draw_background
       @camera.draw
+      @cat.draw
 
       Sprite.draw([
-        @cat,
         *@interiors,
         @player
       ].sort {|a, b| a.y <=> b.y })
@@ -80,7 +80,7 @@ module Scene
         Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: ？？？", @font)  if (@timer.now * 10).floor % 10 < 5
       else
         Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE, 570, "Time: #{@timer.now.round(2)}", @font)
-        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: #{@score}", @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: #{$score}", @font)
       end
 
       if @timer.status == :on
