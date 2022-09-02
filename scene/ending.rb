@@ -49,10 +49,10 @@ module Scene
       super
       Window.bgcolor = C_WHITE
       # draw_background
-      Window.draw_font(Window.width * 0.02, Window.height * 0.1, "ベストスコア", @font, {color: C_BLACK})
-      Window.draw_font(Window.width * 0.05, Window.height * 0.2, "#{@score}", @font, {color: C_BLACK})
-      Window.draw_font(Window.width * 0.05, Window.height * 0.3, "いいね！", @font, {color: C_BLACK})
-      Window.draw_font(Window.width * 0.80, Window.height * 0.1, "もちねこ", @default_font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.02, Window.height * 0.1, "ベストスコア", @font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.05, Window.height * 0.2, "#{@score}", @font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.05, Window.height * 0.3, "いいね！", @font, {color: C_BLACK})
+      Window.draw_font_ex(Window.width * 0.80, Window.height * 0.1, "もちねこ", @default_font, {color: C_BLACK})
       @return_title_button.image = @return_title_button.is_hover ? @return_title_button_image_hover : @return_title_button_image
       @return_title_button.draw
       if @return_game_button.is_hover
@@ -73,7 +73,7 @@ module Scene
         Window.draw_box(Setting::RESULT_VIEW_WIDTH_START, set_y[n], Setting::RESULT_VIEW_WIDTH_END, set_y[n + 1], [255, 204, 204, 204])
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, @haikei_image)
         # Window.draw_box_fill(Setting::PREVIEW_VIEW_WIDTH_START, set_y[n] + 10, Setting::PREVIEW_VIEW_WIDTH_END, set_y[n + 1] - 40, C_BLUE)
-        Window.draw_font(Setting::PREVIEW_VIEW_WIDTH_END - 45, set_y[n + 1] - 30, "#{@score}", @sns_font, {color: C_BLACK})
+        Window.draw_font_ex(Setting::PREVIEW_VIEW_WIDTH_END - 45, set_y[n + 1] - 30, "#{@score}", @sns_font, {color: C_BLACK})
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 40, set_y[n + 1] - 28, @comment_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 130, set_y[n + 1] - 30, @retweet_image)
         Window.draw(Setting::PREVIEW_VIEW_WIDTH_START + 220, set_y[n + 1] - 30, @heart_image)
