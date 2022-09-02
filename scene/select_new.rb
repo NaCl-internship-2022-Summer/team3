@@ -73,7 +73,7 @@ module Scene
     end
 
     def next_scene
-      Scene::MainGame.new()
+      Scene::MainGame.new(@user)
       # Scene::MainGameStart.new
     end
 
@@ -85,8 +85,6 @@ module Scene
         true
       elsif @new_user_button.is_click(M_LBUTTON)
         Input.set_cursor(IDC_ARROW)
-
-        # TODO
         @user = User.new(@text_box.text)
         true
       else

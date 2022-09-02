@@ -4,7 +4,9 @@ module Scene
 
     def initialize(user)
       super()
-      @score = 0
+
+      @user = user
+      $score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 200, Image.load("images/cat_walking.png"))# 横55 縦56
 
@@ -30,8 +32,6 @@ module Scene
 
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
 
-      # @user = user
-      $score = 0
       @timer.on
     end
 
@@ -107,9 +107,6 @@ module Scene
       end
 
       false
-    end
-
-    def restart?
     end
   end
 end

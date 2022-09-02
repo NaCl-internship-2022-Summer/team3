@@ -52,6 +52,8 @@ module Scene
       @cat_images.each do |cat_image|
         @preview_cats << Image.load(cat_image)
       end
+
+      @next_scene = nil
     end
 
     def update
@@ -100,10 +102,15 @@ module Scene
       end
       @count = Window.running_time.to_i / 1000
       Window.draw(Setting::RESULT_VIEW_WIDTH_END - @new_image.width, 10, @new_image) if @count.even?
+
+      if @return_game_button.is_click(M_LBUTTON)
+        Input.set_cursor(IDC_ARROW)
+        @next_scene = Scene::MainGame.new(@user)
+      end
     end
 
     def next_scene
-      Scene::Opening.new
+      @next_scene || Scene::Opening.new
     end
 
     def finish?
@@ -116,12 +123,6 @@ module Scene
           return true if Input.key_push?(key)
         end
         false
-      end
-    end
-
-    def restart?
-      if @return_game_button.is_click(M_LBUTTON)
-        Input.set_cursor(IDC_ARROW)
       end
     end
   end

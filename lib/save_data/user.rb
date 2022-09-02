@@ -21,25 +21,22 @@ module SaveData
       @past_three_data.values_at(-1, -2, -3)
       # @past_three_data.shift if @past_three_data.size > 4
 
-      if @best_score < $score
-        @best_score = $score
+      if @best_score < score
+        @best_score = score
       else
         @best_score
       end
-      # TODO ファイルに保存する
-      @latest_data = {
-                        users: [
-                          {
-                            name: @name,
-                            results: [
-                              { score: @results.last[:score],
-                                time: @results.last[:time]
-                              }
-                            ]
-                          }
-                        ]
-                      }
-      SaveData.save(@latest_data)
+
+      SaveData.save(
+        {
+          users: [
+            {
+              name: @name,
+              results: @results
+            }
+          ]
+        }
+      )
     end
   end
 end
