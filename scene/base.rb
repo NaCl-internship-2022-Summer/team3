@@ -20,7 +20,7 @@ module Scene
     end
 
     def restart?
-      raise NotImplementedError
+      nil
     end
 
     private

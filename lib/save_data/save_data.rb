@@ -9,8 +9,7 @@ module SaveData
   #     {
   #       name: String,
   #       results: [
-  #         score: Integer,
-  #         time: String
+  #         { score: Integer, time: String }, ...
   #       ]
   #     }
   #   ]

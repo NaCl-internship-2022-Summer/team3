@@ -5,7 +5,6 @@ module Scene
     def initialize
       super
       @score = 0
-      @count = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
 
@@ -30,6 +29,8 @@ module Scene
       @camera = Camera.new(@player, @interiors)
 
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
+
+      @timer.on
     end
 
     def update
@@ -56,46 +57,25 @@ module Scene
       Sprite.check(@interiors, @cat)
       Sprite.check(@camera, @cat)
 
-      # test 用
-      @timer.on if Input.key_push?(K_1)
-      @timer.pause if Input.key_push?(K_2)
-      @timer.off if Input.key_push?(K_3)
-
       percent = [@timer.now / Setting::TIME_LIMIT, 1].min
 
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
-      @count = Window.running_time.to_i / 1000
 
       @timer.off if percent >= 1
-      if 0.8 < percent && percent < 1
-        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
-                         570,
-                         "Time: #{@timer.now.round(2)}",
-                         @font)
-        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
-                         570,
-                         "Score: ？？？",
-                         @font)  if @count.even?
-      elsif percent < 1
-        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE,
-                         570,
-                         "Time: #{@timer.now.round(2)}",
-                         @font)
-        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE,
-                         570,
-                         "Score: #{@score}",
-                         @font)
-      else
-        Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2,
-                         570,
-                         "Finish: 1:00",
-                         @font)
+      if percent >= 1
+        Window.draw_font(Window.width/2 - 6*Setting::DEFAULT_FONT_SIZE/2, 570, "Finish: 1:00", @font)
         Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE/2,
                          Window.height/2 - Setting::DEFAULT_FONT_SIZE/2,
                          "Time Over",
                          @font,
                          {color: C_RED})
+      elsif true || 0.8 < percent
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE, 570, "Time: #{@timer.now.round(2)}", @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: ？？？", @font)  if (@timer.now * 10).floor % 10 < 5
+      else
+        Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE, 570, "Time: #{@timer.now.round(2)}", @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: #{@score}", @font)
       end
 
       if @timer.status == :on
@@ -103,8 +83,6 @@ module Scene
         Window.draw(53, 537, @rec_midium)
         Window.draw(56, 540, @rec_small)
       end
-
-      # Window.draw_font(10, 10, Window.real_fps.to_s, Font.default)
     end
 
     def draw
