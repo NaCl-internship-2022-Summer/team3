@@ -27,25 +27,23 @@ module Fixture::MainGame
     end
 
     def update(cat)
-      lines_w = []
-      lines_h = []
+      @lines_w = []
+      @lines_h = []
       [
         *@interiors_collision_lines,
         collision_lines(cat)
       ].each do |lines|
         if (@player.cx - lines[:right].x).abs < (@player.cx - lines[:left].x).abs
-          lines_h << lines[:right]
+          @lines_h << lines[:right]
         else
-          lines_h << lines[:left]
+          @lines_h << lines[:left]
         end
         if (@player.cy - lines[:top].y).abs < (@player.cy - lines[:bottom].y).abs
-          lines_w << lines[:top]
+          @lines_w << lines[:top]
         else
-          lines_w << lines[:bottom]
+          @lines_w << lines[:bottom]
         end
       end
-      Sprite.draw(lines_w)
-      Sprite.draw(lines_h)
 
       ray_count = - @fov / 2 * @rays_length / 10
       @rays.each do |ray|
@@ -55,23 +53,27 @@ module Fixture::MainGame
         ray.center_x = 0
         ray.angle = Util.to_degree(@player.direction + Util.to_radian(ray_count / (@rays_length / 10).to_f))
 
-        lines_w.length.times do |i|
+        @lines_w.length.times do |i|
           is_hit = false
-          is_cat = lines_w.length - 1 == i
+          is_cat = @lines_w.length - 1 == i
 
-          if lines_w[i] === ray # 横の線に当たったら
-            a = lines_w[i].y - @player.cy
+          if @lines_w[i] === ray # 横の線に当たったら
+            a = @lines_w[i].y - @player.cy
             len = (a / Math.cos(Util.to_radian(ray.angle + 90))).abs.to_i
             begin # FIXME
               ray.image = Image.new([1, len].max, 1, @rays_color)
+            rescue
+              p len
             end
             is_hit = true
           end
-          if lines_h[i] === ray # 縦の線に当たったら
-            a = lines_h[i].x - @player.cx
+          if @lines_h[i] === ray # 縦の線に当たったら
+            a = @lines_h[i].x - @player.cx
             len = (a / Math.cos(Util.to_radian(ray.angle))).abs.to_i
             begin
               ray.image = Image.new([1, len].max, 1, @rays_color)
+            rescue
+              p len
             end
             is_hit = true
           end
@@ -89,6 +91,9 @@ module Fixture::MainGame
     end
 
     def draw
+      # Sprite.draw(@lines_w)
+      # Sprite.draw(@lines_h)
+
       Sprite.draw(@rays)
     end
 
