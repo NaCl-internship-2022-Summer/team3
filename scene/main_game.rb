@@ -23,8 +23,8 @@ module Scene
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
       bed.collision = [20, 20, 280, 210]
-      book_shelf.collision = [10, 10, 185, 160]
-      @kaku_table.collision = [10, 85, 175, 135]
+      book_shelf.collision = [10, 10, 184, 158]
+      @kaku_table.collision = [7, 85, 172, 132]
       @interiors = [bed, book_shelf, @kaku_table]
 
       @camera = Camera.new(@player, @interiors)
@@ -107,6 +107,9 @@ module Scene
       # Window.draw_font(10, 10, Window.real_fps.to_s, Font.default)
     end
 
+    def draw
+    end
+
     def next_scene
       Scene::Ending.new(@score)
     end
@@ -121,23 +124,6 @@ module Scene
     end
 
     def restart?
-    end
-
-    private
-
-    def management_enemy
-      # 敵が10体未満なら、10体追加
-      if Enemy.collection.length < 10
-        enemy_img = Image.new(64, 64, C_RED)
-        10.times do |i|
-          Enemy.add(rand(150) + 150, rand(150) + 150, enemy_img)
-        end
-      end
-
-      Enemy.collection.each do |enemy|
-        enemy.update
-        enemy.draw
-      end
     end
   end
 end

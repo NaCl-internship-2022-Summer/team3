@@ -14,20 +14,21 @@ module Setting
     # font
   FONT_JA = "あずきフォント"
   DEFAULT_FONT_SIZE       = 24
-  TITLE_FONT_SIZE         = 48
+  TITLE_FONT_SIZE         = 56
   TITLE_BUTTON_FONT_SIZE  = 32
   ENDING_FONT_SIZE        = 18
   DESCRIBE_FONT_SIZE      = 32
   BEST_SCORE_FONT_SIZE    = 28
+  FONT_COLOR_BLACK = [30, 30, 30]
 
   # text
   DESCRIBE_TEXTS = [
-    "TODO: ゲームの説明",
-    "改行もできる"
+    "動き回るネコをたくさん撮影して",
+    "より多くのいいねを取ろう！"
   ]
 
   # main game
-  PLAYER_SPEED = 2
+  PLAYER_SPEED = 3
   TIME_LIMIT = 60
   PROGRESS_BAR_START = 100
   PROGRESS_BAR_END = 700

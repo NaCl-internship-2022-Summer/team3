@@ -5,6 +5,8 @@ module Fixture::MainGame
     def initialize(player, interiors)
       @player = player
       @fov = 10 # 視野角
+
+      # rays
       @rays = []
       @rays_color = [100, 255, 255, 255]
       @rays_length = 40
@@ -15,6 +17,7 @@ module Fixture::MainGame
         @rays.last.center_x = 0
         @rays.last.angle = Util.to_degree(@player.direction + Util.to_radian(i / (@rays_length / 10).to_f))
       end
+
       @interiors = interiors
       @interiors_collision_lines = []
       color = [50, 255, 0, 0]
@@ -43,7 +46,6 @@ module Fixture::MainGame
       lines_w = []
       lines_h = []
       @interiors_collision_lines.each do |lines|
-        # choose line
         if (@player.cx - lines[:right].x).abs < (@player.cx - lines[:left].x).abs
           lines_h << lines[:right]
         else
@@ -55,8 +57,8 @@ module Fixture::MainGame
           lines_w << lines[:bottom]
         end
       end
-      Sprite.draw(lines_w)
-      Sprite.draw(lines_h)
+      # Sprite.draw(lines_w)
+      # Sprite.draw(lines_h)
 
       i = - @fov / 2 * @rays_length / 10
       @rays.each do |ray|
@@ -97,7 +99,6 @@ module Fixture::MainGame
       # 4. ネコに当たったとき、スコア+
 
       Sprite.draw(@rays)
-      # @interiors_collision_lines.each {|lines| Sprite.draw(lines) }
     end
   end
 end

@@ -1,5 +1,7 @@
 module Scene
   class Base
+    attr_reader :count
+
     def initialize
       @count = 0
       @@background = Fixture::Floor.new unless defined? @@background
