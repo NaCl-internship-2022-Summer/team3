@@ -2,9 +2,9 @@ module Scene
   class MainGame < Scene::Base
     include Fixture::MainGame
 
-    def initialize()
-      super
-
+    def initialize(user)
+      super()
+      @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 200, Image.load("images/cat_walking.png"))# 横55 縦56
 
@@ -94,7 +94,7 @@ module Scene
     end
 
     def next_scene
-      Scene::Ending.new()
+      Scene::Ending.new(@user)
     end
 
     def finish?
@@ -102,7 +102,7 @@ module Scene
 
       if @is_finish
         # save
-        # @user.save($score)
+        @user.save($score)
         return true # next scene
       end
 
