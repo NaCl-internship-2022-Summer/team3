@@ -3,39 +3,44 @@ module Scene
     def initialize
       super
 
+      @next_scene = nil
       @title_font = Font.new(Setting::TITLE_FONT_SIZE, Setting::FONT_JA)
       @background = Image.new(Window.width, Window.height, C_WHITE)
 
       # describe
-      @describe_oy = 200
+      @describe_oy = 180
       @describe_font = Font.new(Setting::DESCRIBE_FONT_SIZE, Setting::FONT_JA)
 
-
-      # use save data
       json = SaveData.load
       @users = json[:users] || []
       @account_button_images = []
       @account_button_images_hover = []
       @account_buttons = []
-      font = Font.new(32, Setting::FONT_JA)
+      font = Font.new(26, Setting::FONT_JA)
       padding = 4
-      line_height = 38
-      @users.each_with_index do |user, i|
-        text = user[:name]
+      line_height = 32
+      3.times do |i|
+        user = @users[i]
+        text = (user ? user[:name] : "")
         w = font.get_width(text) + 10
-        @account_button_images << Image.new(w, 40).draw_font_ex(padding, padding, text, font, { color: [40, 40, 40] })
-        @account_button_images_hover << @account_button_images.last.clone.line(padding, line_height, w - padding, line_height, [40, 40, 40])
+        @account_button_images << Image.new(w, 40).draw_font_ex(padding, padding, text, font, { color: Setting::FONT_COLOR_BLACK })
+        @account_button_images_hover << @account_button_images.last
+                                                              .clone
+                                                              .line(padding, line_height, w - padding, line_height, Setting::FONT_COLOR_BLACK)
         @account_buttons << Button.new(
           (Window.width - @account_button_images.last.width) / 2,
-          Window.height * 0.6, @account_button_images.last
+          Window.height * 0.5 + @account_button_images.last.height * i, @account_button_images.last
         )
       end
 
       # new save data
-      text = "Create new account"
-      w = font.get_width(text) + 10
-      @new_user_button_image = Image.load("images/create_new_account.png")
-      @new_user_button_image.set_color_key(C_BLACK)
+      font = Font.new(18, Setting::FONT_JA)
+      text = "ニューゲーム"
+      padding = 15
+      w = font.get_width(text) + padding * 2
+      h = 50
+      @new_user_button_image = RoundedBox.new(w, h, [113, 187, 255], 25)
+                                         .draw_font_ex(padding, (h - font.size) / 2, text, font, { color: C_WHITE })
       @new_user_button_image_hover = @new_user_button_image.clone
       @new_user_button = Button.new((Window.width - @new_user_button_image.width) / 2, Window.height * 0.8, @new_user_button_image)
     end
@@ -43,7 +48,7 @@ module Scene
     def update
       super
       Window.draw(0, 0, @background)
-      Window.draw_font_ex(40, 50, "ネコったー", @title_font, {color: [40, 40, 40]})
+      Window.draw_font_ex(40, 50, "ネコったー", @title_font, {color: Setting::FONT_COLOR_BLACK})
 
       Setting::DESCRIBE_TEXTS.each_with_index do |text, i|
         Window.draw_font_ex(
@@ -51,7 +56,7 @@ module Scene
           @describe_oy + @describe_font.size * i,
           text,
           @describe_font,
-          {color: [40, 40, 40]}
+          {color: Setting::FONT_COLOR_BLACK}
         )
       end
 
@@ -63,7 +68,7 @@ module Scene
       Sprite.draw(@account_buttons)
       @new_user_button.draw
 
-      if @new_user_button.is_hover # @play_button.is_hover
+      if @new_user_button.is_hover || @account_buttons.find {|btn| btn.is_hover }
         Input.set_cursor(IDC_HAND)
       else
         Input.set_cursor(IDC_ARROW)
@@ -71,7 +76,7 @@ module Scene
     end
 
     def next_scene
-      Scene::MainGame.new
+      @next_scene || Scene::MainGame.new
     end
 
     def finish?
@@ -82,6 +87,7 @@ module Scene
         true
       elsif @new_user_button.is_click(M_LBUTTON)
         Input.set_cursor(IDC_ARROW)
+        @next_scene = Scene::SelectNew.new
         true
       else
         false

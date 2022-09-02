@@ -28,6 +28,13 @@ module SaveData
     return json
   end
 
+  def self.save
+    # TODO
+    path = File.join($path, Setting::SAVE_FILE_NAME)
+    file = JSON.pretty_generate(hash)
+    File.open(path, "w+") {|f| f.write(file) }
+  end
+
   private
 
   def self.symbolize_json(json)
