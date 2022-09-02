@@ -19,7 +19,7 @@ end
 
 scene = Scene::Opening.new
 
-Debugger.new
+Debugger.new(color: [127, 127, 127])
 
 Window.load_icon("images/buzz_neko.ico")
 

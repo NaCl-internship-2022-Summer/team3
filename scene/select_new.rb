@@ -73,7 +73,7 @@ module Scene
     end
 
     def next_scene
-      Scene::MainGame.new(@user)
+      Scene::MainGame.new()
       # Scene::MainGameStart.new
     end
 

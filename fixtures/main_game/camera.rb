@@ -22,83 +22,101 @@ module Fixture::MainGame
       @interiors_collision_lines = []
       color = [50, 255, 0, 0]
       interiors.each do |interior|
-        if interior.collision.nil? || interior.collision.length != 4
-          x = interior.x
-          y = interior.y
-          w = interior.image.width
-          h = interior.image.height
-        else
-          x = interior.x + interior.collision[0]
-          y = interior.y + interior.collision[1]
-          w = interior.collision[2] - interior.collision[0]
-          h = interior.collision[3] - interior.collision[1]
-        end
-        @interiors_collision_lines << {
-          top:    Sprite.new(x,     y,     Image.new(w, 1, [150, 255, 0, 0])),
-          bottom: Sprite.new(x,     y + h, Image.new(w, 1, [150, 255, 255, 0])),
-          left:   Sprite.new(x,     y,     Image.new(1, h, [150, 0, 255, 0])),
-          right:  Sprite.new(x + w, y,     Image.new(1, h, [150, 0, 255, 255]))
-        }
+        @interiors_collision_lines << collision_lines(interior)
       end
     end
 
     def update(cat)
-      lines_w = []
-      lines_h = []
-      @interiors_collision_lines.each do |lines|
+      @lines_w = []
+      @lines_h = []
+      [
+        *@interiors_collision_lines,
+        collision_lines(cat)
+      ].each do |lines|
         if (@player.cx - lines[:right].x).abs < (@player.cx - lines[:left].x).abs
-          lines_h << lines[:right]
+          @lines_h << lines[:right]
         else
-          lines_h << lines[:left]
+          @lines_h << lines[:left]
         end
         if (@player.cy - lines[:top].y).abs < (@player.cy - lines[:bottom].y).abs
-          lines_w << lines[:top]
+          @lines_w << lines[:top]
         else
-          lines_w << lines[:bottom]
+          @lines_w << lines[:bottom]
         end
       end
-      # Sprite.draw(lines_w)
-      # Sprite.draw(lines_h)
 
-      i = - @fov / 2 * @rays_length / 10
+      ray_count = - @fov / 2 * @rays_length / 10
       @rays.each do |ray|
         ray.x = @player.cx
         ray.y = @player.cy
         ray.image = @default_image
         ray.center_x = 0
-        ray.angle = Util.to_degree(@player.direction + Util.to_radian(i / (@rays_length / 10).to_f))
+        ray.angle = Util.to_degree(@player.direction + Util.to_radian(ray_count / (@rays_length / 10).to_f))
 
-        lines_w.length.times do |i|
-          flag = false
+        @lines_w.length.times do |i|
+          is_hit = false
+          is_cat = @lines_w.length - 1 == i
 
-          if lines_w[i] === ray
-            a = lines_w[i].y - @player.cy
-            len = (a / Math.cos(Util.to_radian(ray.angle + 90))).abs.floor(2)
+          if @lines_w[i] === ray # 横の線に当たったら
+            a = @lines_w[i].y - @player.cy
+            len = (a / Math.cos(Util.to_radian(ray.angle + 90))).abs.to_i
+            begin # FIXME
+              ray.image = Image.new([1, len].max, 1, @rays_color)
+            rescue
+              p len
+            end
+            is_hit = true
+          end
+          if @lines_h[i] === ray # 縦の線に当たったら
+            a = @lines_h[i].x - @player.cx
+            len = (a / Math.cos(Util.to_radian(ray.angle))).abs.to_i
             begin
               ray.image = Image.new([1, len].max, 1, @rays_color)
+            rescue
+              p len
             end
-            flag = true
+            is_hit = true
           end
-          if lines_h[i] === ray
-            a = lines_h[i].x - @player.cx
-            len = (a / Math.cos(Util.to_radian(ray.angle))).abs.floor(2)
-            ray.image = Image.new([1, len].max, 1, @rays_color)
-            flag = true
+
+          if is_hit && is_cat
+            $score += 1
           end
-          next if flag
+
+          next if is_hit
         end
-        i += 1
+        ray_count += 1
       end
+
       # Debugger.puts("hit w: #{hit_count_w}, h: #{hit_count_h}")
     end
 
     def draw
-      # 1. 今のスプライト 〇
-      # 2-2. 当たり判定 Sprite#===
-      # 3. 当たった時、 camera.ray の座標を、当たったオブジェクトの座標にする
-      # 4. ネコに当たったとき、スコア+
+      # Sprite.draw(@lines_w)
+      # Sprite.draw(@lines_h)
 
       Sprite.draw(@rays)
+    end
+
+    private
+
+    def collision_lines(sprite)
+      if sprite.collision.nil? || sprite.collision.length != 4
+        x = sprite.x
+        y = sprite.y
+        w = sprite.image.width
+        h = sprite.image.height
+      else
+        x = sprite.x + sprite.collision[0]
+        y = sprite.y + sprite.collision[1]
+        w = sprite.collision[2] - sprite.collision[0]
+        h = sprite.collision[3] - sprite.collision[1]
+      end
+      {
+        top:    Sprite.new(x,     y,     Image.new(w, 1, [150, 255, 0, 0])),
+        bottom: Sprite.new(x,     y + h, Image.new(w, 1, [150, 255, 255, 0])),
+        left:   Sprite.new(x,     y,     Image.new(1, h, [150, 0, 255, 0])),
+        right:  Sprite.new(x + w, y,     Image.new(1, h, [150, 0, 255, 255]))
+      }
     end
   end
 end

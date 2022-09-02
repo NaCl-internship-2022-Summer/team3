@@ -6,7 +6,7 @@ module Scene
       super()
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
-      @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
+      @cat = Cat.new(100, 200, Image.load("images/cat_walking.png"))# 横55 縦56
 
       @timer = Timer.new
       @bar_length = Setting::PROGRESS_BAR_END - Setting::PROGRESS_BAR_START
@@ -23,14 +23,14 @@ module Scene
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
       bed.collision = [20, 20, 280, 190]
       book_shelf.collision = [10, 10, 184, 158]
-      @kaku_table.collision = [7, 85, 172, 132]
+      @kaku_table.collision = [7, 85, 173, 132]
       @interiors = [bed, book_shelf, @kaku_table]
 
       @camera = Camera.new(@player, @interiors)
 
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
 
-      @user = user
+      # @user = user
       $score = 0
       @timer.on
     end
@@ -39,7 +39,7 @@ module Scene
       super
       @player.update
       @camera.update(@cat)
-      @cat.update
+      @cat.update(@interiors)
       Interior.update(@interiors)
 
       Sprite.check(@player, @interiors)
@@ -52,9 +52,9 @@ module Scene
       # draw
       draw_background
       @camera.draw
+      @cat.draw
 
       Sprite.draw([
-        @cat,
         *@interiors,
         @player
       ].sort {|a, b| a.y <=> b.y })
