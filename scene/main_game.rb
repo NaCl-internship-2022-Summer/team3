@@ -2,8 +2,8 @@ module Scene
   class MainGame < Scene::Base
     include Fixture::MainGame
 
-    def initialize()
-      super
+    def initialize(user)
+      super()
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
       @cat = Cat.new(100, 100, Image.load("images/cat_walking.png"))# 横55 縦56
@@ -80,7 +80,7 @@ module Scene
         Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: ？？？", @font)  if (@timer.now * 10).floor % 10 < 5
       else
         Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE, 570, "Time: #{@timer.now.round(2)}", @font)
-        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: #{@score}", @font)
+        Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: #{$score}", @font)
       end
 
       if @timer.status == :on
@@ -94,7 +94,7 @@ module Scene
     end
 
     def next_scene
-      Scene::Ending.new()
+      Scene::Ending.new(@user)
     end
 
     def finish?
@@ -102,7 +102,7 @@ module Scene
 
       if @is_finish
         # save
-        # @user.save($score)
+        @user.save($score)
         return true # next scene
       end
 

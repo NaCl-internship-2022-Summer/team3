@@ -19,6 +19,7 @@ module Scene
         font_color: Setting::FONT_COLOR_BLACK,
         frame_color: Setting::FONT_COLOR_BLACK
       )
+      @user = nil
 
        # account name title
        text = "アカウント名"
@@ -86,7 +87,7 @@ module Scene
         Input.set_cursor(IDC_ARROW)
 
         # TODO
-        # @user = User.new()
+        @user = User.new(@text_box.text)
         true
       else
         false
