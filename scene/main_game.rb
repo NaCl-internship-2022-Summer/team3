@@ -70,7 +70,7 @@ module Scene
                          "Time Over",
                          @font,
                          {color: C_RED})
-      elsif true || 0.8 < percent
+      elsif 0.8 < percent
         Window.draw_font(Window.width/2 - 5*Setting::DEFAULT_FONT_SIZE, 570, "Time: #{@timer.now.round(2)}", @font)
         Window.draw_font(Window.width/2 + 3*Setting::DEFAULT_FONT_SIZE, 570, "Score: ？？？", @font)  if (@timer.now * 10).floor % 10 < 5
       else
