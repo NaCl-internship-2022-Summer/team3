@@ -28,10 +28,10 @@ module SaveData
     return json
   end
 
-  def self.save
-    # TODO
+  def self.save(json)
+    # TODO: ファイルに保存する
+    file = JSON.pretty_generate(json)
     path = File.join($path, Setting::SAVE_FILE_NAME)
-    file = JSON.pretty_generate(hash)
     File.open(path, "w+") {|f| f.write(file) }
   end
 

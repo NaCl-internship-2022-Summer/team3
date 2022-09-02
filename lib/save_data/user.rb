@@ -5,16 +5,14 @@ module SaveData
       @results = []
     end
 
-    def add_data(score, time: Time.now)
+    def save(score, time: Time.now)
       @results << {
         score: score,
         time: time.strftime("%Y-%m-%d %H:%M:%S")
       }
-    end
 
-    def save
-      # TODO
-      SaveData.save()
+      # TODO ファイルに保存する
+      # SaveData.save()
     end
   end
 end

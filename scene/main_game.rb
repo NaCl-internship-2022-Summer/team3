@@ -2,7 +2,7 @@ module Scene
   class MainGame < Scene::Base
     include Fixture::MainGame
 
-    def initialize
+    def initialize()
       super
       @score = 0
       @player = Player.new(Window.width/2, Window.height - 50)
@@ -21,7 +21,7 @@ module Scene
       bed = Interior.new(Window.width - bed_image.width, 0, bed_image)
       book_shelf = Interior.new(0, 0, book_shelf_image)
       @kaku_table = Interior.new(Window.width/2 - table_image.width, 300, table_image)
-      bed.collision = [20, 20, 280, 210]
+      bed.collision = [20, 20, 280, 190]
       book_shelf.collision = [10, 10, 184, 158]
       @kaku_table.collision = [7, 85, 172, 132]
       @interiors = [bed, book_shelf, @kaku_table]
@@ -30,34 +30,39 @@ module Scene
 
       @font = Font.new(Setting::DEFAULT_FONT_SIZE, Setting::FONT_JA)
 
+      @user = user
+      $score = 0
       @timer.on
     end
 
     def update
       super
-      draw_background
-
       @player.update
       @camera.update(@cat)
       @cat.update
       Interior.update(@interiors)
-
-      @camera.draw
-      @cat.draw
-      Interior.draw(@interiors)
-      @player.draw
-
-      # @interiors.each do |kagu|
-      #   Debugger.draw_collision(kagu)
-      # end
-      # Debugger.draw_collision(@cat)
-      # Debugger.draw_msg
 
       Sprite.check(@player, @interiors)
       Sprite.check(@interiors, @cat)
       Sprite.check(@camera, @cat)
 
       percent = [@timer.now / Setting::TIME_LIMIT, 1].min
+      @is_finish = true if percent >= 1
+
+      # draw
+      draw_background
+      @camera.draw
+
+      Sprite.draw([
+        @cat,
+        *@interiors,
+        @player
+      ].sort {|a, b| a.y <=> b.y })
+
+      # @interiors.each do |kagu|
+      #   Debugger.draw_collision(kagu)
+      # end
+      # Debugger.draw_collision(@cat)
 
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_END, 560, C_WHITE)
       Window.draw_box_fill(Setting::PROGRESS_BAR_START, 550, Setting::PROGRESS_BAR_START + percent * @bar_length, 560, [255,192,0,0])
@@ -89,15 +94,18 @@ module Scene
     end
 
     def next_scene
-      Scene::Ending.new(@score)
+      Scene::Ending.new()
     end
 
     def finish?
-      # キーコード定数: https://download.eastback.co.jp/dxruby/api/constant_keycode.html
-      quit_key = [K_ESCAPE]
-      quit_key.each do |key|
-        return true if Input.key_push?(key)
+      return true if Input.key_push?(K_ESCAPE)
+
+      if @is_finish
+        # save
+        # @user.save($score)
+        return true # next scene
       end
+
       false
     end
 

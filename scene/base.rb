@@ -1,5 +1,7 @@
 module Scene
   class Base
+    include SaveData
+
     attr_reader :count
 
     def initialize
