@@ -1,4 +1,5 @@
 require "json"
+require 'fileutils'
 
 module SaveData
   include Crypt
@@ -29,10 +30,11 @@ module SaveData
   end
 
   def self.save(json)
-    # TODO: ファイルに保存する
     file = JSON.pretty_generate(json)
     path = File.join($path, Setting::SAVE_FILE_NAME)
-    File.open(path, "w+") {|f| f.write(file) }
+    dir = File.dirname(Setting::SAVE_FILE_NAME)
+    FileUtils.mkdir(dir) unless Dir.exists?(dir)
+    File.open(path, "w") {|f| f.write(file) }
   end
 
   private
