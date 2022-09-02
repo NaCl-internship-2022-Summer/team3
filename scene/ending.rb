@@ -29,19 +29,23 @@ module Scene
       @retweet_image = Image.load("images/retweet.png")
       @comment_image = Image.load("images/comment.png")
       @saisei_image = Image.load("images/button_saisei.png")
-      @preview_cats = [Image.load("images/cat_akubi.png"),
-                       Image.load("images/cat_nobi.png"),
-                       Image.load("images/cat_oikake.png"),
-                       Image.load("images/cat_sleeping.png"),
-                       Image.load("images/cat_kedukuroi.png"),
-                       Image.load("images/cat_hakai.png"),
-                       Image.load("images/cat_manpuku.png"),
-                       Image.load("images/cat_matatabi.png"),
-                       Image.load("images/cat_roubyou.png"),
-                       Image.load("images/cat_ushiro.png")]
+      @cat_images = ["images/cat_akubi.png",
+                     "images/cat_nobi.png",
+                     "images/cat_oikake.png",
+                     "images/cat_sleeping.png",
+                     "images/cat_kedukuroi.png",
+                     "images/cat_hakai.png",
+                     "images/cat_manpuku.png",
+                     "images/cat_matatabi.png",
+                     "images/cat_roubyou.png",
+                     "images/cat_ushiro.png"]
       7.times do |n|
-        size = @preview_cats.size
-        @preview_cats.delete(@preview_cats[rand(size)])
+        size = @cat_images.size
+        @cat_images.delete(@cat_images[rand(size)])
+      end
+      @preview_cats = []
+      @cat_images.each do |cat_image|
+        @preview_cats << Image.load(cat_image)
       end
     end
 
